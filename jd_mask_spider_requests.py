@@ -122,9 +122,14 @@ class Jd_Mask_Spider(object):
                 return seckill_url
             else:
                 logger.info("抢购链接获取失败，%s不是抢购商品或抢购页面暂未刷新，1秒后重试")
-                time.sleep(1)
+                time.sleep(0.05)
 
     def request_seckill_url(self):
+        # 初始化秒杀信息
+        self.get_seckill_init_info(self.sku_id)
+
+        print(self.seckill_init_info)
+
         """访问商品的抢购链接（用于设置cookie等"""
         logger.info('用户:{}'.format(self.get_username()))
         logger.info('商品名称:{}'.format(get_sku_title()))
@@ -182,7 +187,7 @@ class Jd_Mask_Spider(object):
         """
         logger.info('生成提交抢购订单所需参数...')
         # 获取用户秒杀初始化信息
-        self.seckill_init_info[self.sku_id] = self._get_seckill_init_info()
+        # self.seckill_init_info[self.sku_id] = self._get_seckill_init_info()
         init_info = self.seckill_init_info.get(self.sku_id)
         default_address = init_info['addressList'][0]  # 默认地址dict
         invoice_info = init_info.get('invoiceInfo', {})  # 默认发票信息dict, 有可能不返回
@@ -272,3 +277,7 @@ class Jd_Mask_Spider(object):
                 error_message = '抢购失败，返回信息:{}'.format(resp_json)
                 send_wechat(error_message)
             return False
+
+    def get_seckill_init_info(self, sku_id):
+        if not self.seckill_init_info.get(sku_id):
+            self.seckill_init_info[sku_id] = self._get_seckill_init_info()
