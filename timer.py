@@ -13,6 +13,7 @@ class Timer(object):
     def start(self):
         logger.info('正在等待到达设定时间:%s' % self.buy_time)
         now_time = datetime.now
+        print(now_time)
         while True:
             if now_time() >= self.buy_time:
                 logger.info('时间到达，开始执行……')

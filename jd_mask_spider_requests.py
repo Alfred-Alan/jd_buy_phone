@@ -129,6 +129,7 @@ class Jd_Mask_Spider(object):
         self.get_seckill_init_info(self.sku_id)
 
         print(self.seckill_init_info)
+        logger.info("初始化参数：",(self.seckill_init_info))
 
         """访问商品的抢购链接（用于设置cookie等"""
         logger.info('用户:{}'.format(self.get_username()))
